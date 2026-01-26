@@ -26,10 +26,14 @@ type SearchContextType = {
   setQuery: (query: string) => void;
   geoloc: string;
   setGeoloc: (geoloc: string) => void;
+  currentLoc: Suggestions;
+  setCurrentLoc: (currentLoc: Suggestions) => void;
   getLocation: () => void;
   suggestions: Suggestions[];
   setSuggestions: (suggestions: Suggestions[]) => void;
   fetchCitySuggestions: (query: string) => void;
+  error: string | null;
+  setError: (error: string | null) => void;
 };
 
 const SearchContext = createContext<SearchContextType | undefined>(undefined);
@@ -37,14 +41,31 @@ const SearchContext = createContext<SearchContextType | undefined>(undefined);
 export function SearchProvider({ children }: { children: React.ReactNode }) {
   const [query, setQuery] = useState('');
   const [geoloc, setGeoloc] = useState('');
+  const [error, setError] = useState<string | null>(null);
   const [suggestions, setSuggestions] = useState<Suggestions[]>([]);
+  const [currentLoc, setCurrentLoc] = useState<Suggestions>({
+    name: '',
+    region: '',
+    country: '',
+    latitude: 0,
+    longitude: 0
+  });
 
   const getLocation = async () => {
     const { status } = await Location.requestForegroundPermissionsAsync();
-    console.log(status);
     if (status === 'granted') {
       const { coords } = await Location.getCurrentPositionAsync();
       setGeoloc(`${coords.latitude}, ${coords.longitude}`);
+      setError('');
+      setSuggestions([]);
+      setQuery('');
+      setCurrentLoc({
+        name: '',
+        region: '',
+        country: '',
+        latitude: coords.latitude,
+        longitude: coords.longitude
+      });
     }
     else if (status === 'denied') {
       setGeoloc("denied");
@@ -68,12 +89,14 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
           latitude: item.latitude,
           longitude: item.longitude
         }));
+        setError('');
         setSuggestions(transformed);
       } else {
+        setError('noResult');
         setSuggestions([]);
       }
     } catch (error) {
-      console.log('Error fetching cities', error);
+      setError('fetchError');
       setSuggestions([]);
     }
   }
@@ -83,7 +106,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   return (
-    <SearchContext.Provider value={{ query, setQuery, geoloc, setGeoloc, getLocation, suggestions, setSuggestions, fetchCitySuggestions }}>
+    <SearchContext.Provider value={{ query, setQuery, geoloc, setGeoloc, error, setError, currentLoc, setCurrentLoc, getLocation, suggestions, setSuggestions, fetchCitySuggestions }}>
       {children}
     </SearchContext.Provider>
   );

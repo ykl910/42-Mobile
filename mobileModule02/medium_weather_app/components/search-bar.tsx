@@ -7,10 +7,12 @@ import SuggestionsList from "@/components/suggestions-list";
 
 
 export default function SearchBar() {
-  const { query, setQuery, getLocation, suggestions, setSuggestions, fetchCitySuggestions } = useSearch();
+  const { query, setQuery, setGeoloc, getLocation, suggestions, setSuggestions, fetchCitySuggestions, setCurrentLoc } = useSearch();
 
   const handleSelectCity = (suggestions: Suggestions) => {
-    setQuery(suggestions.name);
+    setGeoloc(`${suggestions.latitude}, ${suggestions.longitude}`);
+    setCurrentLoc(suggestions);
+    setQuery('');
     setSuggestions([]);
   }
 
