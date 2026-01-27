@@ -32,6 +32,16 @@ export default function Index() {
       setExpression(expression+input);
   }
 
+  const handleSub = (input: string) => {
+    const lst = expression.slice(-1);
+    if (expression === '0') {
+      setExpression(input);
+      return;
+    }
+    if (lst==='*' || lst==='/' || lst==='+' || !operators.includes(lst))
+      setExpression(expression+input);
+  }
+
   const handleClean = (input: string) => {
     if (input == "AC") {
       setExpression('0');
@@ -83,7 +93,7 @@ export default function Index() {
           <Button text="7" onPress={() => handleNumber('7')} />
           <Button text="8" onPress={() => handleNumber('8')} />
           <Button text="9" onPress={() => handleNumber('9')} />
-          <Button text="-" onPress={() => handleOper('-')} />
+          <Button text="-" onPress={() => handleSub('-')} />
         </View>
 
         <View style={styles.row}>
