@@ -4,31 +4,12 @@ import { Ionicons } from '@expo/vector-icons';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { useSearch } from "@/context/search-context";
 import { fetchWeatherApi } from "openmeteo";
+import WeatherChart from "./weather-chart";
+import type { WeatherData } from "./weather-types";
 import { useState, useEffect } from "react";
 
 type ContentTextProps = {
   tab: string;
-};
-
-type WeatherData = {
-  current: {
-    time: Date;
-    temperature_2m: number;
-    wind_speed_10m: number;
-    weather_code: number;
-  };
-  hourly: {
-    time: Date[];
-    temperature_2m: Float32Array;
-    wind_speed_10m: Float32Array;
-    weather_code: Float32Array;
-  };
-  daily: {
-    time: Date[];
-    temperature_2m_min: Float32Array;
-    temperature_2m_max: Float32Array;
-    weather_code: Float32Array;
-  };
 };
 
 const getWeatherDescription = (code: number): string => {
@@ -226,6 +207,8 @@ export default function ContentText({ tab }: ContentTextProps) {
         <View style={styles.container}>
           <Text style={[styles.text, styles.title]}>{locationText}</Text>
           
+          <WeatherChart weather={weatherData} tab={"Today"} />
+
           <View style={styles.list}>
             {todayHours.map(({ time, index }) => (
               <View key={index} style={styles.card}>
@@ -238,12 +221,10 @@ export default function ContentText({ tab }: ContentTextProps) {
                 <Text style={styles.textSecondary}>
                   {getWeatherDescription(weatherData.hourly.weather_code[index])}
                 </Text>
-                <Text style={styles.textSecondary}>
-                  <View style={styles.row}>
-                    <MaterialCommunityIcons name="weather-windy" size={16} color={Colors.charcoal} style={{ marginRight: 6 }} />
-                    <Text style={styles.textSecondary}>{Math.round(weatherData.hourly.wind_speed_10m[index])} km/h</Text>
-                  </View>
-                </Text>
+                <View style={styles.row}>
+                  <MaterialCommunityIcons name="weather-windy" size={16} color={Colors.charcoal} style={{ marginRight: 6 }} />
+                  <Text style={styles.textSecondary}>{Math.round(weatherData.hourly.wind_speed_10m[index])} km/h</Text>
+                </View>
               </View>
             ))}
           </View>
