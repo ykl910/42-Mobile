@@ -6,7 +6,6 @@ import ContentText from "@/components/content-text";
 export default function Today() {
   return (
 	<View style={styles.container}>
-	  <SearchBar />
 		<ContentText tab='Today' />
 	</View>
   );

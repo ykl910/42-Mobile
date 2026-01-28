@@ -203,12 +203,10 @@ export default function ContentText({ tab }: ContentTextProps) {
     const locationText = locationParts.join(', ') || 'Current Location';
 
     return (
-      <ScrollView>
         <View style={styles.container}>
           <Text style={[styles.text, styles.title]}>{locationText}</Text>
-          
           <WeatherChart weather={weatherData} tab={"Today"} />
-
+          <ScrollView horizontal={true}>
           <View style={styles.list}>
             {todayHours.map(({ time, index }) => (
               <View key={index} style={styles.card}>
@@ -228,8 +226,8 @@ export default function ContentText({ tab }: ContentTextProps) {
               </View>
             ))}
           </View>
+          </ScrollView>
         </View>
-      </ScrollView>
     );
   };
 
@@ -273,22 +271,22 @@ export default function ContentText({ tab }: ContentTextProps) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     padding: 20,
     alignItems: 'center',
     backgroundColor: 'transparent',
   },
   text: {
     color: Colors.darkBlue,
+    textAlign: 'center',
   },
   textSecondary: {
     color: Colors.charcoal,
     textAlign: 'center',
   },
   title: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginVertical: 10,
     textAlign: 'center',
   },
   row: {
@@ -306,11 +304,12 @@ const styles = StyleSheet.create({
   list: {
     width: '100%',
     marginTop: 20,
+    flexDirection: 'row',
   },
   card: {
-    backgroundColor: 'rgba(127, 161, 195, 0.05)',
-    padding: 15,
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    padding: 10,
     borderRadius: 10,
-    marginVertical: 5,
+    margin: 5,
   },
 });

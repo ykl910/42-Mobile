@@ -9,10 +9,12 @@ type WeatherChartProps = {
 };
 
 export default function WeatherChart({ weather, tab }: WeatherChartProps) {
-  if (tab !== "Today" || !weather) return null;
+  if (!weather) return null;
 
+  if (tab !== "Today") {
+
+  }
   const today = new Date(weather.current.time);
-
   const points = weather.hourly.time
     .map((t, index) => ({ time: t instanceof Date ? t : new Date(t), index }))
     .filter(({ time }) => time.getDate() === today.getDate());
@@ -46,13 +48,15 @@ export default function WeatherChart({ weather, tab }: WeatherChartProps) {
   };
 
   const windowW = Dimensions.get('window').width;
-  const chartWidth = windowW - 60; // Account for padding and y-axis label
-  const chartHeight = 180;
+  const chartWidth = windowW - 60;
+  const chartHeight = 250;
 
   const chartConfig = {
-    backgroundGradientFrom: 'rgba(0, 0, 0, 0.02)',
-    backgroundGradientTo: 'rgba(0, 0, 0, 0.02)',
-    color: (opacity = 1) => `rgba(34, 87, 152, ${opacity})`,
+    backgroundGradientFrom: '#ffffff',
+    backgroundGradientFromOpacity: 0.3,
+    backgroundGradientTo: '#ffffff',
+    backgroundGradientToOpacity: 0.3,
+    color: (opacity = 0.5) => `rgba(34, 87, 152, ${opacity})`,
     labelColor: () => Colors.darkBlue,
     decimalPlaces: 0,
     propsForDots: { r: '3', strokeWidth: '0' },
@@ -76,7 +80,7 @@ export default function WeatherChart({ weather, tab }: WeatherChartProps) {
             height={chartHeight}
             chartConfig={chartConfig}
             bezier
-            withVerticalLines={false}
+            withVerticalLines={true}
             fromZero={false}
             yAxisSuffix="°C"
             yAxisInterval={1}
@@ -112,11 +116,11 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   yAxisLabelContainer: {
-    width: 20,
-    height: 180,
+    width: 8,
+    height: 200,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 12,
+    marginRight: 16,
   },
   yAxisLabel: {
     color: Colors.darkBlue,
@@ -128,15 +132,17 @@ const styles = StyleSheet.create({
   chartContainer: {
     flex: 1,
     alignItems: 'center',
+    backgroundColor: 'transparent',
   },
   chart: {
-    marginVertical: 8,
+    marginVertical: 0,
+    padding: 8,
+    borderRadius: 16
   },
   xAxisLabel: {
     textAlign: 'center',
     color: Colors.darkBlue,
     fontSize: 12,
     fontWeight: '600',
-    marginTop: 4,
   },
 });

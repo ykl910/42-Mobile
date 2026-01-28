@@ -6,7 +6,6 @@ import ContentText from "@/components/content-text";
 export default function Currently() {
   return (
     <View style={styles.container}>
-      <SearchBar />
 		<ContentText tab='Currently' />
     </View>
   );
