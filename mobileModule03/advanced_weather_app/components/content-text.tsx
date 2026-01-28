@@ -173,8 +173,7 @@ export default function ContentText({ tab }: ContentTextProps) {
     const locationText = locationParts.join(', ') || 'Current Location';
     return (
       <View style={styles.container}>
-        <Text style={[styles.text, styles.title, styles.spacedItem]}>{locationText}</Text>
-        
+        <Text style={[styles.text, styles.title, { fontSize: 24 }]}>{locationText}</Text>
         <Text style={[styles.text, styles.large, styles.spacedItem]}>{Math.round(weatherData.current.temperature_2m)}°C</Text>
         <View style={[styles.row]}>
           <Ionicons
@@ -204,7 +203,7 @@ export default function ContentText({ tab }: ContentTextProps) {
 
     return (
         <View style={styles.container}>
-          <Text style={[styles.text, styles.title]}>{locationText}</Text>
+          <Text style={[styles.text, styles.title, { fontSize: 24 }]}>{locationText}</Text>
           <WeatherChart weather={weatherData} tab={"Today"} />
           <ScrollView horizontal={true}>
           <View style={styles.list}>
@@ -236,10 +235,10 @@ export default function ContentText({ tab }: ContentTextProps) {
     const locationText = locationParts.join(', ') || 'Current Location';
     
     return (
-      <ScrollView>
         <View style={styles.container}>
-          <Text style={[styles.text, styles.title]}>{locationText}</Text>
-          
+          <Text style={[styles.text, styles.title, { fontSize: 24 }]}>{locationText}</Text>
+          <WeatherChart weather={weatherData} tab={"Weekly"} />
+          <ScrollView horizontal={true}>
           <View style={styles.list}>
             {weatherData.daily.time.map((time, index) => (
               <View key={index} style={styles.card}>
@@ -255,8 +254,8 @@ export default function ContentText({ tab }: ContentTextProps) {
               </View>
             ))}
           </View>
+          </ScrollView>
         </View>
-      </ScrollView>
     );
   };
 
@@ -284,7 +283,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   title: {
-    fontSize: 22,
+    fontSize: 18,
     fontWeight: 'bold',
     marginVertical: 10,
     textAlign: 'center',

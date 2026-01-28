@@ -11,30 +11,42 @@ type WeatherChartProps = {
 export default function WeatherChart({ weather, tab }: WeatherChartProps) {
   if (!weather) return null;
 
-  if (tab !== "Today") {
+  let points;
+  let tempsHour;
+  let tempsDayMax;
+  let tempsDayMin;
+  let min;
+  let max;
 
+  if (tab === "Today") {
+    const today = new Date(weather.current.time);
+    points = weather.hourly.time
+      .map((t, index) => ({ time: t instanceof Date ? t : new Date(t), index }))
+      .filter(({ time }) => time.getDate() === today.getDate());
+    if (!points || points.length === 0) return null;
+    tempsHour = points.map(({ index }) => Number(weather.hourly.temperature_2m[index]))
+      .filter(t => !isNaN(t) && isFinite(t));
+    if (!tempsHour || tempsHour.length === 0) return null;
+    min = Math.min(...tempsHour);
+    max = Math.max(...tempsHour);
+
+  } else if (tab === "Weekly") {
+    points = weather.daily.time
+      .map((t, index) => ({time: t instanceof Date ? t: new Date(t), index}))
+    if (!points || points.length === 0) return null;
+    tempsDayMax = points.map(({ index }) => Number(weather.daily.temperature_2m_max[index]))
+      .filter(t => !isNaN(t) && isFinite(t));
+    tempsDayMin = points.map(({ index }) => Number(weather.daily.temperature_2m_min[index]))
+      .filter(t => !isNaN(t) && isFinite(t));
+    if (!tempsDayMax || tempsDayMax.length === 0) return null;
+    if (!tempsDayMin || tempsDayMin.length === 0) return null;
+    min = Math.min(...tempsDayMax);
+    max = Math.max(...tempsDayMax);
   }
-  const today = new Date(weather.current.time);
-  const points = weather.hourly.time
-    .map((t, index) => ({ time: t instanceof Date ? t : new Date(t), index }))
-    .filter(({ time }) => time.getDate() === today.getDate());
 
-  if (!points || points.length === 0) return null;
-
-  const temps = points.map(({ index }) => Number(weather.hourly.temperature_2m[index]))
-    .filter(t => !isNaN(t) && isFinite(t));
-
-  if (!temps || temps.length === 0) return null;
-
-  const min = Math.min(...temps);
-  const max = Math.max(...temps);
-  const pad = Math.max(1, (max - min) * 0.1);
-  const yMin = min - pad;
-  const yMax = max + pad;
-
-  const labelValues = points.map(({ time }) => time.toLocaleTimeString([], { hour: '2-digit' }));
-  // reduce label density: only show up to 6 labels
-  const maxLabels = Math.min(6, labelValues.length);
+  const labelValues = points!.map(({ time }) => (tab === 'Today' ? time.toLocaleTimeString([], { hour: '2-digit' }) :
+                                                                   time.toLocaleDateString([], { day: "2-digit", month: "2-digit" })));
+  const maxLabels = Math.min(8, labelValues.length);
   const labels = labelValues.length <= maxLabels 
     ? labelValues 
     : labelValues.map((v, i) => {
@@ -42,10 +54,19 @@ export default function WeatherChart({ weather, tab }: WeatherChartProps) {
         return i % step === 0 ? v : '';
       });
 
-  const data = {
-    labels,
-    datasets: [{ data: points.map(({ index }) => Number(weather.hourly.temperature_2m[index])) }]
-  };
+  let data;
+  if (tab === "Today") {
+    data = {
+      labels,
+      datasets: [{ data: points!.map(({ index }) => Number(weather.hourly.temperature_2m[index])) }]
+    };
+  } else if (tab === "Weekly") {
+      data = {
+        labels,
+        datasets: [{ data: points!.map(({ index }) => Number(weather.daily.temperature_2m_max[index])), color: () => Colors.coral, strokeWidth: 2 },
+                  { data: points!.map(({ index }) => Number(weather.daily.temperature_2m_min[index])), color: () => Colors.lavender, strokeWidth: 2 },],
+                  legend: ["Max temp", "Min temp"]};
+  }
 
   const windowW = Dimensions.get('window').width;
   const chartWidth = windowW - 60;
@@ -64,8 +85,7 @@ export default function WeatherChart({ weather, tab }: WeatherChartProps) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Today — Hourly Temperature</Text>
-
+      <Text style={[styles.xAxisLabel, { fontSize : 18 }]}>{tab === 'Today' ? "Today Temperature" : "Weekly Temperature" }</Text>
       <View style={styles.chartWrapper}>
         <View style={styles.yAxisLabelContainer}>
           <Text style={[styles.yAxisLabel, { transform: [{ rotate: '-90deg' }] }]}>
@@ -75,7 +95,7 @@ export default function WeatherChart({ weather, tab }: WeatherChartProps) {
         
         <View style={styles.chartContainer}>
           <LineChart
-            data={data}
+            data={data!}
             width={chartWidth}
             height={chartHeight}
             chartConfig={chartConfig}
@@ -89,8 +109,7 @@ export default function WeatherChart({ weather, tab }: WeatherChartProps) {
             segments={4}
             verticalLabelRotation={0}
           />
-          
-          <Text style={styles.xAxisLabel}>Time of Day</Text>
+          <Text style={styles.xAxisLabel}>{tab === 'Today' ? "Time of Day" : "Day of week" }</Text>
         </View>
       </View>
     </View>
@@ -102,13 +121,6 @@ const styles = StyleSheet.create({
     width: '100%', 
     paddingVertical: 8,
     alignItems: 'center',
-  },
-  header: { 
-    textAlign: 'center', 
-    color: Colors.darkBlue, 
-    marginBottom: 12, 
-    fontSize: 16,
-    fontWeight: 'bold'
   },
   chartWrapper: {
     flexDirection: 'row',
