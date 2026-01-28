@@ -7,7 +7,6 @@ export default function Weekly() {
   return (
 	<BackgroundWrapper>
 	  <View style={styles.container}>
-		<SearchBar />
 		<ContentText tab='Weekly' />
 	  </View>
 	</BackgroundWrapper>

@@ -7,7 +7,6 @@ export default function Today() {
   return (
     <BackgroundWrapper>
       <View style={styles.container}>
-        <SearchBar />
         <ContentText tab='Today' />
       </View>
     </BackgroundWrapper>

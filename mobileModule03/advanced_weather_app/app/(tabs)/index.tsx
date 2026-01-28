@@ -7,7 +7,6 @@ export default function Currently() {
   return (
     <BackgroundWrapper>
       <View style={styles.container}>
-        <SearchBar />
         <ContentText tab='Currently' />
       </View>
     </BackgroundWrapper>
