@@ -2,6 +2,7 @@ import { Text, View, StyleSheet, Dimensions } from "react-native";
 import { Colors } from "@/constants/colors";
 import type { WeatherData } from "./weather-types";
 import { LineChart } from 'react-native-chart-kit';
+import { useEffect, useState } from "react";
 
 type WeatherChartProps = {
   weather: WeatherData | null;
@@ -9,6 +10,12 @@ type WeatherChartProps = {
 };
 
 export default function WeatherChart({ weather, tab }: WeatherChartProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   if (!weather) return null;
 
   let points;
@@ -85,10 +92,10 @@ export default function WeatherChart({ weather, tab }: WeatherChartProps) {
 
   return (
     <View style={styles.container}>
-      <Text style={[styles.xAxisLabel, { fontSize : 18 }]}>{tab === 'Today' ? "Today Temperature" : "Weekly Temperature" }</Text>
+      <Text style={[styles.xAxisLabel, { fontSize : 16, color: Colors.charcoal }]}>{tab === 'Today' ? "Today Temperature" : "Weekly Temperature" }</Text>
       <View style={styles.chartWrapper}>
         <View style={styles.yAxisLabelContainer}>
-          <Text style={[styles.yAxisLabel, { transform: [{ rotate: '-90deg' }] }]}>
+          <Text style={[styles.yAxisLabel, mounted && { transform: [{ rotate: '-90deg' }] }]}>
             Temperature (°C)
           </Text>
         </View>

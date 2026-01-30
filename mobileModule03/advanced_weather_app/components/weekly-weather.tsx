@@ -12,7 +12,7 @@ interface WeeklyWeatherProps {
 
 const WeeklyWeather: React.FC<WeeklyWeatherProps> = ({ weatherData, locationText, getWeatherDescription }) => (
   <View style={{ alignItems: 'center', padding: 20, backgroundColor: 'transparent' }}>
-    <Text style={{ fontSize: 24, fontWeight: 'bold', marginVertical: 10, color: Colors.darkBlue, textAlign: 'center' }}>{locationText}</Text>
+    <Text style={{ fontSize: 24, fontWeight: 'bold', marginTop: 10, marginBottom: 20, color: Colors.darkBlue, textAlign: 'center' }}>{locationText}</Text>
     <WeatherChart weather={weatherData} tab={"Weekly"} />
     <ScrollView horizontal={true}>
       <View style={{ width: '100%', marginTop: 20, flexDirection: 'row' }}>

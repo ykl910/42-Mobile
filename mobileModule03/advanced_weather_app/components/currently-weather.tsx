@@ -22,14 +22,14 @@ export default function CurrentlyWeather({ weatherData, locationText, getWeather
 			<Ionicons
 				name={getWeatherIconName(weatherData.current.weather_code)}
 				size={24}
-				color={Colors.darkBlue}
+				color={Colors.charcoal}
 				style={{ marginRight: 8 }}
 			/>
-			<Text style={{ fontSize: 18, fontWeight: 'bold', marginVertical: 10, color: Colors.darkBlue, textAlign: 'center' }}>{getWeatherDescription(weatherData.current.weather_code)}</Text>
+			<Text style={{ fontSize: 18, marginVertical: 10, color: Colors.charcoal, textAlign: 'center' }}>{getWeatherDescription(weatherData.current.weather_code)}</Text>
 			</View>
 			<View style={{ flexDirection: 'row', alignItems: 'center' }}>
-			<MaterialCommunityIcons name="weather-windy" size={18} color={Colors.charcoal} style={{ marginRight: 8 }} />
-			<Text style={{ color: Colors.charcoal, textAlign: 'center' }}>{Math.round(weatherData.current.wind_speed_10m)} {windSpeedUnit}</Text>
+			<MaterialCommunityIcons name="weather-windy" size={24} color={Colors.charcoal} style={{ marginRight: 8, marginVertical: 10 }} />
+			<Text style={{ color: Colors.charcoal, textAlign: 'center', fontSize: 18 }}>{Math.round(weatherData.current.wind_speed_10m)} {windSpeedUnit}</Text>
 			</View>
 		</View>	
 	);

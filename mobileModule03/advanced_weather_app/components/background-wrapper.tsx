@@ -9,7 +9,7 @@ export default function BackgroundWrapper({ children }: BackgroundWrapperProps) 
   return (
     <ImageBackground
       source={require("../assets/images/weather_app_bg.png")}
-      style={styles.background}
+      style={[styles.background, { backgroundColor: '#ffffff' }]}
       resizeMode="cover"
       imageStyle={{ opacity: 0.65 }}
     >

@@ -5,11 +5,9 @@ import BackgroundWrapper from "@/components/background-wrapper";
 
 export default function Currently() {
   return (
-    <BackgroundWrapper>
       <View style={styles.container}>
         <ContentText tab='Currently' />
       </View>
-    </BackgroundWrapper>
   );
 }
 

@@ -5,11 +5,9 @@ import BackgroundWrapper from "@/components/background-wrapper";
 
 export default function Weekly() {
   return (
-	<BackgroundWrapper>
 	  <View style={styles.container}>
 		<ContentText tab='Weekly' />
 	  </View>
-	</BackgroundWrapper>
   );
 }
 

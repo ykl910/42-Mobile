@@ -6,6 +6,7 @@ import { withLayoutContext } from 'expo-router';
 import { View, StyleSheet, Platform, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import SearchBar from '@/components/search-bar';
+import BackgroundWrapper from '@/components/background-wrapper';
 
 const { Navigator } = createMaterialTopTabNavigator();
 export const MaterialTopTabs = withLayoutContext(Navigator);
@@ -18,6 +19,7 @@ export default function TabLayout() {
           <View style={styles.searchBarContainer}>
             <SearchBar/>
           </View>
+          <BackgroundWrapper>
           <View style={{flex:1}}>
             <MaterialTopTabs
             tabBarPosition='bottom'
@@ -31,6 +33,7 @@ export default function TabLayout() {
                   backgroundColor: Colors.lightCream,
                   height: 3,
                 },
+                sceneStyle: { backgroundColor: 'transparent' },
                 tabBarShowIcon: true,
                 swipeEnabled: true,
                 lazy: true,
@@ -65,6 +68,7 @@ export default function TabLayout() {
               />
             </MaterialTopTabs>
           </View>
+          </BackgroundWrapper>
         </View>
       </SafeAreaView>
     </SearchProvider>
@@ -79,7 +83,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: Colors.darkBlue,
+    backgroundColor: 'transparent',
   },
   searchBarContainer: {
     backgroundColor: Colors.darkBlue,
