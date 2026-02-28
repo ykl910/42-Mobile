@@ -4,10 +4,10 @@ import {
   Alert, ActivityIndicator, Modal, TextInput, ScrollView,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { useAuth } from '../context/auth-context';
-import { supabase } from '../config/supabase';
-import { Entry } from '../types/entry';
-import { theme as t } from '../constants/theme';
+import { useAuth } from '../../context/auth-context';
+import { supabase } from '../../config/supabase';
+import { Entry } from '../../types/entry';
+import { theme as t } from '../../constants/theme';
 
 const FEELINGS = ['😊', '😢', '😡', '😰', '🤔', '😎'];
 
@@ -120,7 +120,7 @@ export default function Profile() {
       {/* Header */}
       <View style={s.header}>
         <View>
-          <Text style={s.headerTitle}>🌿 My Diary</Text>
+          <Text style={s.headerTitle}>🌿 Profile</Text>
           <Text style={s.headerEmail}>{user.email}</Text>
         </View>
         <TouchableOpacity onPress={signOut}>
@@ -161,7 +161,7 @@ export default function Profile() {
           ))}
 
           {/* Feeling Distribution */}
-          <Text style={s.sectionTitle}>Feeling Distribution</Text>
+          <Text style={s.sectionTitle}>Feelings</Text>
           <View style={s.statCard}>
             {getFeelingStats().map((stat) => (
               <View key={stat.feeling} style={s.feelingStat}>
@@ -421,7 +421,7 @@ const s = StyleSheet.create({
   // FAB
   fab: {
     position: 'absolute',
-    bottom: 40,
+    bottom: 100,
     right: 24,
     width: 56,
     height: 56,

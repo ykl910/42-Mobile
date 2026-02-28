@@ -18,7 +18,7 @@ export default function Index() {
 
   const handlePress = () => {
     if (user) {
-      router.push('/profile');
+      router.push('/(tabs)/profile');
     } else {
       router.push('/auth');
     }

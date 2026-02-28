@@ -41,7 +41,7 @@ export default function Auth() {
   // Once logged in, go to diary
   useEffect(() => {
     if (user && !loading) {
-      router.replace('/profile');
+      router.replace('/(tabs)/profile');
     }
   }, [user, loading]);
 
