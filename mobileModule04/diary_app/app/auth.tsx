@@ -60,7 +60,7 @@ export default function Auth() {
       if (error) throw error;
       if (!data.url) throw new Error('No OAuth URL returned');
 
-      const result = await WebBrowser.openAuthSessionAsync(data.url, redirectUri);
+      const result = await WebBrowser.openAuthSessionAsync(data.url, redirectUri, { preferEphemeralSession: true });
 
       if (result.type === 'success') {
         await createSessionFromUrl(result.url);

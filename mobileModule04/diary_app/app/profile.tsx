@@ -142,7 +142,12 @@ export default function Profile() {
       )}
 
       {/* FAB */}
-      <TouchableOpacity style={s.fab} onPress={() => setModalVisible(true)}>
+      <TouchableOpacity style={s.fab} onPress={() => {
+        setTitle('');
+        setContent('');
+        setFeeling('');
+        setModalVisible(true);
+      }}>
         <Text style={s.fabText}>+</Text>
       </TouchableOpacity>
 
