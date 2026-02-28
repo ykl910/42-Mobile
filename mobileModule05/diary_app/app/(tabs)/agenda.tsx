@@ -3,7 +3,7 @@ import {
   View, Text, StyleSheet, FlatList, TouchableOpacity,
   Alert, ActivityIndicator, Modal, ScrollView,
 } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, useSegments } from 'expo-router';
 import { Calendar, DateData } from 'react-native-calendars';
 import { useAuth } from '../../context/auth-context';
 import { supabase } from '../../config/supabase';
@@ -13,6 +13,7 @@ import { theme as t } from '../../constants/theme';
 export default function Agenda() {
   const { user, loading: authLoading, signOut } = useAuth();
   const router = useRouter();
+  const segments = useSegments();
   const [entries, setEntries] = useState<Entry[]>([]);
   const [filteredEntries, setFilteredEntries] = useState<Entry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -25,8 +26,10 @@ export default function Agenda() {
   }, [user, authLoading]);
 
   useEffect(() => {
-    if (user) fetchEntries();
-  }, [user]);
+    if (user && segments[1] === 'agenda') {
+      fetchEntries();
+    }
+  }, [user, segments]);
 
   useEffect(() => {
     filterEntriesByDate(selectedDate);

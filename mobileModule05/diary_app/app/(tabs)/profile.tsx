@@ -3,7 +3,7 @@ import {
   View, Text, StyleSheet, FlatList, TouchableOpacity,
   Alert, ActivityIndicator, Modal, TextInput, ScrollView,
 } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, useSegments } from 'expo-router';
 import { useAuth } from '../../context/auth-context';
 import { supabase } from '../../config/supabase';
 import { Entry } from '../../types/entry';
@@ -14,6 +14,7 @@ const FEELINGS = ['😊', '😢', '😡', '😰', '🤔', '😎'];
 export default function Profile() {
   const { user, loading: authLoading, signOut } = useAuth();
   const router = useRouter();
+  const segments = useSegments();
   const [entries, setEntries] = useState<Entry[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
@@ -27,8 +28,10 @@ export default function Profile() {
   }, [user, authLoading]);
 
   useEffect(() => {
-    if (user) fetchEntries();
-  }, [user]);
+    if (user && segments[1] === 'profile') {
+      fetchEntries();
+    }
+  }, [user, segments]);
 
   const fetchEntries = async () => {
     setLoading(true);
